@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <title>Test</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <pre id="json1"></pre>
+    <pre id="json2"></pre>
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="tty-table.bundle.min.js"></script>
+    <!--Add script to update the page and send messages.-->
+    <script type="text/javascript">
+
+      var Table = require("tty-table");
+
+      function processTagCountJSON(data) {
+        var header = createHeader("Hashtag","Count");
+        var rows = createRows(data);
+        $('#json1').html(getTableString(header, rows));
+      }
+
+      function createHeader(keyHeader, valueHeader){
+        var header = [
+          {
+            value : keyHeader,
+            align : "center",
+            width : 30
+          },
+          {
+            value : valueHeader,
+            align : "right"
+          }
+        ];
+        return header;
+      }
+
+      function createRows(array){
+        var index;
+        var rows = [];
+        for (index = 0; index < array.length; ++index) {
+            rows.push([array[index].key, array[index].value]);
+        }
+        return rows;
+      }
+
+      function getTableString(header, rows){
+        var style = {
+          borderStyle : 2,
+          paddingBottom : 0,
+          headerAlign : "center",
+          align : "center",
+        };
+        var t = Table(header,rows);
+        return t.render();
+      }
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+          //Socket.io
+          var socket = io();
+          //display messages sent by the server
+          socket.on('topTags', function(data) {
+            console.log('received topTags: ' + data);
+            // Add the message to the page.
+            processTagCountJSON(data);
+          });
+
+          socket.on('topLangsByTag', function(data) {
+            console.log('received topLangsByTag: ' + data);
+            // Add the message to the page.
+            //processLangListJSON(data);
+          });
+
+        });
+    </script>
+    
+
+</body>
