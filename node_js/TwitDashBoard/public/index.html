@@ -111,7 +111,12 @@
 
     $(function () {
       //Socket.io
-      var socket = io();
+      var socket = io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
+      //Acknowledge
+      socket.on('server', function (data) {
+        console.log(data);
+        socket.emit('browser', {});
+      });
       //display messages sent by the server
       socket.on('topTags', function(data) {
         console.log('received topTags: ' + data);

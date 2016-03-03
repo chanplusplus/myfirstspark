@@ -1,3 +1,4 @@
+import com.github.nkzawa.emitter.Emitter;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 
@@ -13,41 +14,24 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.net.URISyntaxException;
 
 import scala.Tuple2;
 import twitter4j.Status;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.lang.management.ThreadMXBean;
+
+
 /**
- * Created by Chan Pruksapha on 2/9/2016 AD.
+ * Created by Chan Pruksapha on 3/2/2016 AD.
  */
 public class TopLanguageByTag {
 
-    static Duration streamSlide, outputSlide, outputWindow;
-    static Integer topKLangs;
-    static Integer topNTags;
-
-    static void initParams(int N, int K, int ss, int os, int ow){
-        topNTags = N;
-        topKLangs = K;
-
-        streamSlide = new Duration(ss);
-        outputSlide = new Duration(os);
-        outputWindow = new Duration(ow);
-
-        // Configuring Twitter credentials
-        String apiKey = "On4lmf0wFOQ72qpZLMdJHYOXQ";
-        String apiSecret = "tskmQAEwFJSEDGntnkRGgjOxX8nVr8JyTbwtiliJ0G3eumuyFR";
-        String accessToken = "35429495-V3UmzdTxQX3Wqh8Zfh8BsjlGGcxdeWSELTCh4VLBe";
-        String accessTokenSecret = "vgKiJPoPVui2baXZCAW878IothSD5qYMO6K3INfbMXD7q";
-        System.setProperty("twitter4j.oauth.consumerKey", apiKey);
-        System.setProperty("twitter4j.oauth.consumerSecret", apiSecret);
-        System.setProperty("twitter4j.oauth.accessToken", accessToken);
-        System.setProperty("twitter4j.oauth.accessTokenSecret", accessTokenSecret);
-
-        Logger.getLogger("org").setLevel(Level.OFF);
-    }
 
     static Socket getSocket(){
         Socket tmp_socket;
@@ -60,23 +44,38 @@ public class TopLanguageByTag {
         return tmp_socket;
     }
 
-
-    // Create a local StreamingContext with two working thread and batch interval of 1 second
-    public static void main(String[] args) throws URISyntaxException {
-
-        initParams( 5, 10, 5000, 5000, 60000);
-
-        final Socket socket = getSocket();
-        if(socket != null) {
-            socket.connect();
-        } else {
-            System.err.println("Can't reach Node.js Server!!!");
-            System.exit(0);
+    static class MyListener implements Emitter.Listener {
+        Object lock;
+        String msg;
+        MyListener(Object lock, String msg){
+            this.lock = lock;
+            this.msg = msg;
         }
+        public void call(Object... objects) {
+            synchronized (lock) {
+                System.out.println(msg);
+                lock.notifyAll();
+            }
+        }
+    }
 
-        final SparkConf sparkConf = new SparkConf().setAppName("TopLanguageByTag");
-        final JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, streamSlide);
 
+    static void startSparkStream(final JavaStreamingContext jssc, final Socket socket) {
+
+        final Integer topNTags = 5;
+        final Integer topKLangs = 10;
+        Duration outputSlide = new Duration(5000);
+        Duration outputWindow = new Duration(60000);
+
+        // Configuring Twitter credentials
+        String apiKey = "On4lmf0wFOQ72qpZLMdJHYOXQ";
+        String apiSecret = "tskmQAEwFJSEDGntnkRGgjOxX8nVr8JyTbwtiliJ0G3eumuyFR";
+        String accessToken = "35429495-V3UmzdTxQX3Wqh8Zfh8BsjlGGcxdeWSELTCh4VLBe";
+        String accessTokenSecret = "vgKiJPoPVui2baXZCAW878IothSD5qYMO6K3INfbMXD7q";
+        System.setProperty("twitter4j.oauth.consumerKey", apiKey);
+        System.setProperty("twitter4j.oauth.consumerSecret", apiSecret);
+        System.setProperty("twitter4j.oauth.accessToken", accessToken);
+        System.setProperty("twitter4j.oauth.accessTokenSecret", accessTokenSecret);
 
         JavaReceiverInputDStream<Status> tweets = TwitterUtils.createStream(jssc);
         tweets.persist();
@@ -135,8 +134,6 @@ public class TopLanguageByTag {
                 return o2._1() - o1._1();
             }
         };
-
-
 
         JavaPairDStream<String, Integer> topHashTags = totalHashtags.transformToPair(new Function<JavaPairRDD<Integer, String>, JavaPairRDD<String, Integer>>() {
             @Override
@@ -312,11 +309,64 @@ public class TopLanguageByTag {
             }
         });
 
-
-
         jssc.start();
-        jssc.awaitTermination();
 
     }
+
+    static void suiside(){
+        RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+        String jvmName = runtimeBean.getName();
+        System.out.println("JVM Name = " + jvmName);
+        long pid = Long.valueOf(jvmName.split("@")[0]);
+        Runtime rt = Runtime.getRuntime();
+        try {
+            rt.exec(String.format("kill -9 %d",pid));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) throws URISyntaxException {
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        SparkConf sparkConf = new SparkConf().setAppName("TopLanguageByTag");
+
+        final JavaStreamingContext jssc =  new JavaStreamingContext(sparkConf, new Duration(5000));
+        Socket socket = getSocket();
+
+        if(socket != null) {
+            Object lock = new Object();
+
+            socket.connect();
+            socket.on("shutdown", new MyListener(lock,"ME: Getting shutdown message!"));
+            System.out.println("ME: Open twitter Stream.");
+            startSparkStream(jssc, socket);
+
+            synchronized (lock) {
+                try {
+                    System.out.println("ME: Enter Wait.");
+                    lock.wait();
+                    System.out.println("ME: Exit Wait.");
+                    suiside();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            System.err.println("ME: Can't reach Node.js Server!!!");
+            System.exit(0);
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 }

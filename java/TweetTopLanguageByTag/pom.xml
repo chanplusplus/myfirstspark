@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>self.project</groupId>
-    <artifactId>tweet-toglang-bytag</artifactId>
+    <artifactId>twit-togtag-langbreak</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -25,6 +24,7 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming-twitter_2.10</artifactId>
             <version>1.6.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
@@ -51,7 +51,19 @@
             <artifactId>json</artifactId>
             <version>20151123</version>
         </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.10.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
-</project>
 
+</project>
