@@ -10,7 +10,7 @@ Credit: http://codepen.io/anon/pen/EPBobX
 
 table {border-collapse:collapse; table-layout:fixed; width:400px;}
        
-tr td:first-child {width:350px; word-wrap:break-word; text-align: left}
+tr td:first-child {width:380px; word-wrap:break-word; text-align: left}
 tr td:last-child {width:20px; word-wrap:break-word; text-align: right}
 
 body{
