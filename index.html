@@ -83,28 +83,37 @@
 </script>
 <script type="text/javascript">
 
-  function setTable(data, tableObj) {
+  // function setTable(data, tableObj) {
     
-      var mytab = $(tableObj).dynatable({
-        table: {
-          defaultColumnIdStyle: 'camelCase',
-          columns: null,
-          headRowSelector: 'thead tr', // or e.g. tr:first-child
-          bodyRowSelector: 'tbody tr',
-          headRowClass: null
-        },
-        features: {
-          paginate: false,
-          search: false,
-          sort: false,
-          recordCount: false
-        },
-        dataset: {
-          records: data
-        }
-      }).data('dynatable');          
-      mytab.settings.dataset.originalRecords = data;
-      mytab.process();
+  //     var mytab = $(tableObj).dynatable({
+  //       table: {
+  //         defaultColumnIdStyle: 'camelCase',
+  //         columns: null,
+  //         headRowSelector: 'thead tr', // or e.g. tr:first-child
+  //         bodyRowSelector: 'tbody tr',
+  //         headRowClass: null
+  //       },
+  //       features: {
+  //         paginate: false,
+  //         search: false,
+  //         sort: false,
+  //         recordCount: false
+  //       },
+  //       dataset: {
+  //         records: data
+  //       }
+  //     }).data('dynatable');          
+  //     mytab.settings.dataset.originalRecords = data;
+  //     mytab.process();
+  // }
+
+  function setTable(data, $table) {
+    $table.find('tr').remove();
+    var rows = '';
+    for(j=0; j != data.length; ++j) {
+        rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
+    }
+    $table.find('th').after(rows);
   }
 
   function processTagCountJSON(data) {
