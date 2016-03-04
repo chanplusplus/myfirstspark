@@ -62,8 +62,8 @@
     $( this ).attr("id",'lang-'+langISO[index].code);
   });
 
-  var langFullName = new Object();
-  for(i=0; i < langISO.length; ++i) langFullName[langISO[index].code] = langISO[index].name;
+  var langFullName = {};
+  for(i=0; i < langISO.length; ++i) langFullName[langISO[i].code] = langISO[i].name;
 
 </script>
 <script type="text/javascript">
