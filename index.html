@@ -114,17 +114,17 @@
   //     mytab.process();
   // }
 
-  function setTable(data, $table) {
-    $table.find('tr').remove();
-    var rows = '';
-    for(j=0; j != data.length; ++j) {
-        //rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
-    }
-    $table.find('tr.rows').each(function(index){
-      $(this).find('td:first').text(data[index].tag);
-      $(this).find('td:last').text(data[index].count);
-    });
-  }
+  // function setTable(data, $table) {
+  //   $table.find('tr').remove();
+  //   var rows = '';
+  //   for(j=0; j != data.length; ++j) {
+  //       //rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
+  //   }
+  //   $table.find('tr.rows').each(function(index){
+  //     $(this).find('td:first').text(data[index].tag);
+  //     $(this).find('td:last').text(data[index].count);
+  //   });
+  // }
 
   function processTagCountJSON(data) {
       setTable(data, $('#tagRanking'));
