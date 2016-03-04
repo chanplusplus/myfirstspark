@@ -21,7 +21,7 @@ server.listen(port, function() {
 //Handle Socket.io connections
 var blankCnt = 0;
 var pathToJAR = '../../java2/out/artifacts/TweetTopTagByLanguage_jar/';
-var startcmd = 'spark-submit --class TopLanguageByTag --master local[4] ' + pathToJAR + 'TweetTopTagByLanguage.jar';
+var startcmd = 'spark-submit --class TopTagByLanguage --master local[4] ' + pathToJAR + 'TweetTopTagByLanguage.jar';
 var sparkOn = false;
 io.on('connection', function(socket) {
   socket.emit('server',{});
