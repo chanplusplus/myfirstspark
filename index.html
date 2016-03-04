@@ -7,6 +7,10 @@
     <!-- link rel="stylesheet" type="text/css" href="jquery.dynatable.css" media="screen" /-->
 </head>
 <body>
+
+    <pre id="json1"></pre>
+    <pre id="json2"></pre>
+
    <div style="margin: 20px auto; line-height: 20px;">
      <div class="subhead">Top Hashtags Globally</div>
      <table id="tagRanking" >
@@ -39,8 +43,7 @@
       </div-->
     </div>
 
-    <pre id="json1"></pre>
-    <pre id="json2"></pre>
+
    
 </body>
 
@@ -137,8 +140,9 @@
       socket.on('topTagByLangs', function(data) {
         console.log('received topTagByLangs: ' + data);
         // Add the message to the page.
-        processLangCountJSON(data);
         $('#json2').html(JSON.stringify(data));
+        processLangCountJSON(data);
+        
         
       });
 
