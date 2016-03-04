@@ -8,7 +8,7 @@ Credit: http://codepen.io/anon/pen/EPBobX
     margin-right: auto;
 }
 
-table {border-collapse:collapse; table-layout:fixed; width:360px;}
+table {border-collapse:collapse; table-layout:fixed; width:400px;}
        
 tr td:first-child, th:first-child {width:300px; word-wrap:break-word; text-align: left}
 tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
@@ -57,8 +57,10 @@ body{
     width: 47%;
 }
 .collumn:nth-child(odd) + .collumn { 
-  border-left: 1px solid #2f2f2f;
+  border-right: 1px solid #2f2f2f;
 }
+
+
 
 .collumn .headline{
     text-align: center;
