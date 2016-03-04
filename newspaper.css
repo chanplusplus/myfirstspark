@@ -8,6 +8,10 @@ Credit: http://codepen.io/anon/pen/EPBobX
     margin-right: auto;
 }
 
+table {border-collapse:collapse; table-layout:fixed; width:250px;}
+       
+table td {border:solid 1px #fab; width:125px; word-wrap:break-word;}
+
 body{
     font-family: 'Droid Serif', serif;
     font-size: 14px;

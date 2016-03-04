@@ -15,7 +15,7 @@
      <div class="subhead">Top Hashtags Globally</div>
      <table id="tagRanking" >
         <thead>
-          <tr>
+          <tr class="header">
             <th>Tag</th>
             <th>Count</th>
           </tr>
@@ -71,7 +71,9 @@
   String.prototype.repeat = function(times) {
    return (new Array(times + 1)).join(this);
   };
+
   var rowstr10 = '<tr class="rows"><td></td><td></td></tr>'.repeat(10);
+  $('#tagRanking').find('tbody').append(rowstr10);
 
   for(i=0; i < langISO.length; ++i) {
     
@@ -82,7 +84,7 @@
     $div.find('span').text(langISO[i].name);
     $table = $div.find('table')
     $table.attr('id', 'lang-'+langISO[i].code);
-    $table.find('tr.header').after(rowstr10)
+    $table.find('tbody').append(rowstr10);
   }
 
   //console.log(langFullName);
