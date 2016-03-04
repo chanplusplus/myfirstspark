@@ -100,10 +100,10 @@
   }
 
   function processLangCountJSON(data) {
-      console.log(JSON.stringify(data));
+      console.log(data.length);
       for(j=0; j < data.length; ++j) {
         //if (key < 3) {
-          value = data[i];
+          value = data[j];
           console.log(value);
           var divObj = $('#lang-'+value.lang);
           setTable(value.topTags, divObj.find("table"));
