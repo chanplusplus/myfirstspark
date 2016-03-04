@@ -104,7 +104,7 @@
       $.each(data, function(key, value){
         //if (key < 3) {
           var divObj = $('#lang-'+value.lang);
-          divObj.find("span").text(555);
+          divObj.find("span").text(langFullName[value.lang]);
           setTable(value.topTags, divObj.find("table"));
         //}
       });
