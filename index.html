@@ -125,7 +125,7 @@
         //$('#json1').html(JSON.stringify(data));
       });
 
-      socket.on('topLangsByTag', function(data) {
+      socket.on('topTagByLangs', function(data) {
         console.log('received topLangsByTag: ' + data);
         // Add the message to the page.
         processLangCountJSON(data);
