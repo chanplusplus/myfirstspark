@@ -126,7 +126,7 @@ body{
 
 }
 
-@media only all and (max-width: 375px) {
+@media only all and (max-width: 376px) {
     table{width:95%}
     tr td:first-child, th:first-child {width:50; word-wrap:break-word; text-align: left}
     tr td:last-child, th:last-child {width:60; word-wrap:break-word; text-align: right}
