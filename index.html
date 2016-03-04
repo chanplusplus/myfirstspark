@@ -63,8 +63,11 @@
   });
 
   var langFullName = {};
-  for(i=0; i < langISO.length; ++i) langFullName[langISO[i].code] = langISO[i].name;
-  console.log(langFullName);
+  for(i=0; i < langISO.length; ++i) {
+    console.log(langISO[i].code);
+    langFullName[langISO[i].code] = langISO[i].name;
+  }
+  
 
 </script>
 <script type="text/javascript">
