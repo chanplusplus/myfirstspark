@@ -10,8 +10,8 @@ Credit: http://codepen.io/anon/pen/EPBobX
 
 table {border-collapse:collapse; table-layout:fixed; width:400px;}
        
-tr td:first-child, th:first-child {width:380px; word-wrap:break-word; text-align: left}
-tr td:last-child, th:last-child {width:20px; word-wrap:break-word; text-align: right}
+tr td:first-child, th:first-child {width:340px; word-wrap:break-word; text-align: left}
+tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
 
 body{
     font-family: 'Droid Serif', serif;
