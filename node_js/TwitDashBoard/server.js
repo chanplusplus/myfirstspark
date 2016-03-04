@@ -56,9 +56,9 @@ io.on('connection', function(socket) {
 
   });
 
-  socket.on('topLangsByTag', function(data) {
+  socket.on('topTagByLangs', function(data) {
     //console.log('got topLangsByTag' );
-    socket.broadcast.emit('topLangsByTag', data);
+    socket.broadcast.emit('topTagByLangs', data);
   });
 
 });
