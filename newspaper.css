@@ -56,10 +56,7 @@ body{
     transition: all .7s;
     width: 47%;
 }
-.collumn:nth-child(odd) + .collumn { 
-  border-left: 1px solid #2f2f2f;
-  height: 100%
-}
+
 
 
 
