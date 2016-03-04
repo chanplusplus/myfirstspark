@@ -68,13 +68,14 @@
   blackList.add("cs");
 
   for(i=0; i < langISO.length; ++i) {
-    $('#langBreakDown').append('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
-  }
+    
+    if(blackList.has(value.lang)) continue; 
 
-  $('#langBreakDown').find('div').each(function( index ) {
-    $(this).attr("id",'lang-'+langISO[index].code);
-    $(this).find('span').text(langISO[index].name);
-  });
+    var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>'
+      , {id: 'lang-'+langISO[index].code})
+    $('#langBreakDown').append($div);
+    $div.find('span').text(langISO[i].name);
+  }
 
   //console.log(langFullName);
 
