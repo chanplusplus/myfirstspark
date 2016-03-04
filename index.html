@@ -68,6 +68,11 @@
   // blackList.add("cs");
   // blackList.add("pt");
 
+  String.prototype.repeat = function(times) {
+   return (new Array(times + 1)).join(this);
+  };
+  var rowstr10 = '<tr class="rows"><td>#Dummy</td><td>0</td></tr>'.repeat(10);
+
   for(i=0; i < langISO.length; ++i) {
     
     if(blackList.has(langISO[i].code)) continue; 
@@ -75,8 +80,9 @@
     var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr class="header"><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
     $('#langBreakDown').append($div);
     $div.find('span').text(langISO[i].name);
-    $div.find('table').attr('id', 'lang-'+langISO[i].code);
-    $div.find('table')
+    $table = $div.find('table')
+    $table.attr('id', 'lang-'+langISO[i].code);
+    $table.find('tr.header').after(rowstr10)
   }
 
   //console.log(langFullName);
@@ -114,7 +120,10 @@
     for(j=0; j != data.length; ++j) {
         //rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
     }
-    $table.find('th').after(rows);
+    $table.find('tr.rows').each(function(index){
+      $(this).find('td:first').text(data[index].tag);
+      $(this).find('td:last').text(data[index].count);
+    });
   }
 
   function processTagCountJSON(data) {
