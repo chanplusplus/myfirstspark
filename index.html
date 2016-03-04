@@ -8,7 +8,7 @@
 </head>
 <body>
    <div style="margin: 20px auto; line-height: 20px;">
-     <div class="subhead">Top Hashtags by Count</div>
+     <div class="subhead">Top Hashtags Globally</div>
      <table id="tagRanking" >
         <thead>
           <tr>
@@ -21,7 +21,7 @@
       </table>
   </div>
 
-    <div class="subhead">Languages Breakdown</div>
+    <div class="subhead">Top Hashtags By Language</div>
 
     <div id="langBreakDown">
       <!--div id="rank1" style="display: inline-block" >
@@ -52,7 +52,7 @@
   var maxtags = 5;
   var i;
   for(i=0; i < maxtags; ++i) {
-    $('#langBreakDown').append('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Lang</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
+    $('#langBreakDown').append('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
   }
   $('#langBreakDown').find('div').each(function( index ) {
     $( this ).attr("id","rank"+ ++index);
@@ -92,7 +92,7 @@
       $.each(data, function(key, value){
         //if (key < 3) {
           var divObj = $('#rank' + (key+1));
-          divObj.find("span").text(value.tag);
+          divObj.find("span").text(value.lang);
           setTable(value.topLangs, divObj.find("table"));
         //}
       });
@@ -102,12 +102,12 @@
 
 <script type="text/javascript">
 
-  var initialTopTags = [{"count":11,"tag":"#KCA"},{"count":9,"tag":"#ALDUBTheQuestion"},{"count":5,"tag":"#VoteKathrynFPP"},{"count":3,"tag":"#LunesDeGanarSeguidores"},{"count":2,"tag":"#VotaSebastiánVillalobos"}];
+  // var initialTopTags = [{"count":11,"tag":"#KCA"},{"count":9,"tag":"#ALDUBTheQuestion"},{"count":5,"tag":"#VoteKathrynFPP"},{"count":3,"tag":"#LunesDeGanarSeguidores"},{"count":2,"tag":"#VotaSebastiánVillalobos"}];
   
-  var initialTopLangs = [{"tag":"#LunesDeGanarSeguidores","topLangs":[{"count":3,"lang":"es"}]},{"tag":"#VotaSebastiánVillalobos","topLangs":[{"count":1,"lang":"es"},{"count":1,"lang":"en"}]},{"tag":"#ALDUBTheQuestion","topLangs":[{"count":5,"lang":"tl"},{"count":4,"lang":"en"}]},{"tag":"#VoteKathrynFPP","topLangs":[{"count":3,"lang":"und"},{"count":1,"lang":"tl"},{"count":1,"lang":"en"}]},{"tag":"#KCA","topLangs":[{"count":3,"lang":"und"},{"count":3,"lang":"en"},{"count":2,"lang":"tl"},{"count":2,"lang":"es"},{"count":1,"lang":"pt"}]}];
+  // var initialTopLangs = [{"tag":"#LunesDeGanarSeguidores","topLangs":[{"count":3,"lang":"es"}]},{"tag":"#VotaSebastiánVillalobos","topLangs":[{"count":1,"lang":"es"},{"count":1,"lang":"en"}]},{"tag":"#ALDUBTheQuestion","topLangs":[{"count":5,"lang":"tl"},{"count":4,"lang":"en"}]},{"tag":"#VoteKathrynFPP","topLangs":[{"count":3,"lang":"und"},{"count":1,"lang":"tl"},{"count":1,"lang":"en"}]},{"tag":"#KCA","topLangs":[{"count":3,"lang":"und"},{"count":3,"lang":"en"},{"count":2,"lang":"tl"},{"count":2,"lang":"es"},{"count":1,"lang":"pt"}]}];
 
-  processTagCountJSON(initialTopTags);
-  processLangCountJSON(initialTopLangs);
+  //processTagCountJSON(initialTopTags);
+  //processLangCountJSON(initialTopLangs);
 
     $(function () {
       //Socket.io
