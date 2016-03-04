@@ -75,7 +75,7 @@
     var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
     $('#langBreakDown').append($div);
     $div.find('span').text(langISO[i].name);
-    $div.find('table').attr('class', 'lang-'+langISO[i].code);
+    $div.find('table').attr('id', 'lang-'+langISO[i].code);
   }
 
   //console.log(langFullName);
