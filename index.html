@@ -116,9 +116,13 @@
 
   function setTable(data, $table) {
     $table.find('tr.rows').each(function(index){
-      if(index > 1 || index >= data.length) return;
-      $(this).find('td:first').text(data[index].tag);
-      $(this).find('td:last').text(data[index].count);
+      if(index < data.length) {
+          $(this).find('td:first').text(data[index].tag);
+          $(this).find('td:last').text(data[index].count);
+      } else{
+          $(this).find('td:first').text('');
+          $(this).find('td:last').text('');
+      }      
     });
   }
 
