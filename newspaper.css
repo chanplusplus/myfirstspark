@@ -57,7 +57,8 @@ body{
     width: 47%;
 }
 .collumn:nth-child(odd) + .collumn { 
-  border-right: 1px solid #2f2f2f;
+  border-left: 1px solid #2f2f2f;
+  height: 100%
 }
 
 
