@@ -106,6 +106,7 @@
           value = data[j];
           console.log(value);
           var divObj = $('#lang-'+value.lang);
+          if(value.lang == "ht") continue; 
           setTable(value.topTags, divObj.find("table"));
         //}
       }
