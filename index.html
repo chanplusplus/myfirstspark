@@ -64,10 +64,10 @@
 
   var langFullName = {};
   for(i=0; i < langISO.length; ++i) {
-    console.log(langISO[i].code);
+    //console.log(langISO[i].code);
     langFullName[langISO[i].code] = langISO[i].name;
   }
-  console.log(langFullName);
+  //console.log(langFullName);
 
 </script>
 <script type="text/javascript">
@@ -104,7 +104,7 @@
       $.each(data, function(key, value){
         //if (key < 3) {
           var divObj = $('#lang-'+value.lang);
-          divObj.find("span").text(langFullName[value.lang]);
+          divObj.find("span").text(555);
           setTable(value.topTags, divObj.find("table"));
         //}
       });
