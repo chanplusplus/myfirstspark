@@ -8,9 +8,9 @@ Credit: http://codepen.io/anon/pen/EPBobX
     margin-right: auto;
 }
 
-table {border-collapse:collapse; table-layout:fixed; width:400px;}
+table {border-collapse:collapse; table-layout:fixed; width:360px;}
        
-tr td:first-child, th:first-child {width:340px; word-wrap:break-word; text-align: left}
+tr td:first-child, th:first-child {width:300px; word-wrap:break-word; text-align: left}
 tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
 
 body{
