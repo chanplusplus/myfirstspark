@@ -100,6 +100,7 @@
   }
 
   function processLangCountJSON(data) {
+      console(data.length);
       $.each(data, function(key, value){
         //if (key < 3) {
           console.log('#lang-'+value.lang);
