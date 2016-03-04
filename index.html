@@ -101,14 +101,14 @@
 
   function processLangCountJSON(data) {
       console.log(JSON.stringify(data));
-      $.each(data, function(key, value){
+      for(j=0; j < data.length; ++j) {
         //if (key < 3) {
-          console.log('#lang-'+value.lang);
+          value = data[i];
+          console.log(value);
           var divObj = $('#lang-'+value.lang);
-          //divObj.find("span").text(langFullName[value.lang]);
           setTable(value.topTags, divObj.find("table"));
         //}
-      });
+      }
   }
 
 </script>
