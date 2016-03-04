@@ -59,14 +59,10 @@
   }
 
   $('#langBreakDown').find('div').each(function( index ) {
-    $( this ).attr("id",'lang-'+langISO[index].code);
+    $(this).attr("id",'lang-'+langISO[index].code);
+    $(this).find('span').text(langISO[index].name);
   });
 
-  var langFullName = {};
-  for(i=0; i < langISO.length; ++i) {
-    //console.log(langISO[i].code);
-    langFullName[langISO[i].code] = langISO[i].name;
-  }
   //console.log(langFullName);
 
 </script>
@@ -104,7 +100,7 @@
       $.each(data, function(key, value){
         //if (key < 3) {
           var divObj = $('#lang-'+value.lang);
-          divObj.find("span").text(langFullName[value.lang]);
+          //divObj.find("span").text(langFullName[value.lang]);
           setTable(value.topTags, divObj.find("table"));
         //}
       });
