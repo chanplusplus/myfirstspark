@@ -72,10 +72,11 @@
     
     if(blackList.has(langISO[i].code)) continue; 
 
-    var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
+    var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr class="header"><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
     $('#langBreakDown').append($div);
     $div.find('span').text(langISO[i].name);
     $div.find('table').attr('id', 'lang-'+langISO[i].code);
+    $div.find('table')
   }
 
   //console.log(langFullName);
@@ -111,7 +112,7 @@
     $table.find('tr').remove();
     var rows = '';
     for(j=0; j != data.length; ++j) {
-        rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
+        //rows = rows + '<tr>'+data.tag+'</tr><tr>'+data.count+'</tr>'
     }
     $table.find('th').after(rows);
   }
@@ -121,11 +122,11 @@
   }
 
   function processLangCountJSON(data) {
-      console.log(data.length);
+      //console.log(data.length);
       for(j=0; j < data.length; ++j) {
         //if (key < 3) {
           value = data[j];
-          console.log(value);
+          //console.log(value);
           if(blackList.has(value.lang)) continue; 
           setTable(value.topTags, $('#lang-'+value.lang));
         //}
