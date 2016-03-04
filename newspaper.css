@@ -125,3 +125,8 @@ body{
     }
 
 }
+
+@media only all and (max-width: 375px) {
+    tr td:first-child, th:first-child {width:70%px; word-wrap:break-word; text-align: left}
+    tr td:last-child, th:last-child {width:30%px; word-wrap:break-word; text-align: right}
+}
