@@ -128,6 +128,6 @@ body{
 
 @media only all and (max-width: 375px) {
     table{width:98%%}
-    tr td:first-child, th:first-child {width:80%; word-wrap:break-word; text-align: left}
+    tr td:first-child, th:first-child {width:60%; word-wrap:break-word; text-align: left}
     tr td:last-child, th:last-child {width:15%; word-wrap:break-word; text-align: right}
 }
