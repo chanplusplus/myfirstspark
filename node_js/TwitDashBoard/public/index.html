@@ -157,7 +157,7 @@
 
     $(function () {
       //Socket.io
-      var socket = io('localhost:3000');
+      var socket = io();
       //Acknowledge
       socket.on('server', function (data) {
         console.log(data);
