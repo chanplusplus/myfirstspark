@@ -1,4 +1,6 @@
-
+/*
+Credit: http://codepen.io/anon/pen/EPBobX
+*/
 
 
  table {
@@ -6,12 +8,17 @@
     margin-right: auto;
 }
 
+table {border-collapse:collapse; table-layout:fixed; width:400px;}
+       
+tr td:first-child, th:first-child {width:300px; word-wrap:break-word; text-align: left}
+tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
+
 body{
     font-family: 'Droid Serif', serif;
     font-size: 14px;
     color: #2f2f2f;
     background-color: #f9f7f1;
-    width: 500px;
+    width: 100%;
     margin:0 auto;
 }
 
@@ -49,9 +56,9 @@ body{
     transition: all .7s;
     width: 47%;
 }
-.collumn:nth-child(odd) + .collumn { 
-  border-left: 1px solid #2f2f2f;
-}
+
+
+
 
 .collumn .headline{
     text-align: center;
@@ -117,4 +124,10 @@ body{
         overflow: hidden;
     }
 
+}
+
+@media only all and (max-width: 375px) {
+    table{width:95%}
+    tr td:first-child, th:first-child {width:85%; word-wrap:break-word; text-align: left}
+    tr td:last-child, th:last-child {width:15%; word-wrap:break-word; text-align: right}
 }
