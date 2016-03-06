@@ -1,5 +1,7 @@
+## Overview
+![hi][slide0]
 ## Installation
-Assume that in your local machine, apache spark is install and `PATH` is configured correctly. If not so, please follow the below instruction:
+Assume that in you are in a linux machine on which apache spark is installed and `PATH` variable is configured correctly. If not so, please follow the below instruction:
 ```sh
 wget http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz -P .
 sudo tar zxvf ./spark-* -C /usr/local
@@ -7,29 +9,28 @@ sudo mv /usr/local/spark-* /usr/local/spark
 export SPARK_HOME=/usr/local/spark
 export PATH=$PATH:$SPARK_HOME/bin
 ```
-The exact location of the installation isn't important. What is necessary is that `spark-submit` should be able to be called on your system. To check if this is the case, try running:
+The exact location of the installation isn't important. What necessary is that `spark-submit` should be able to be called on your system. To check if this is the case, try running:
 ```sh
 $ which spark-submit
 /usr/local/spark/bin/spark-submit
 ```
 Again, it is totally fine if the output is not `/usr/local/spark/bin/spark-submit`, so long as it is some directory's name.
 
-### Setup the Web Application
+### Clone and run the Application Locally
 ```sh
 $ git clone https://github.com/arabbig/myfirstspark.git
-$ cd myfirstspark
-$ mv java/out/artifacts/TweetTopLanguageByTag_jar/TweetTopLanguageByTag.jar ~
+$ cd myfirstspark/node_js/TwitDashBoard
+$ node server.js
 ```
-### Running the NodeJS server
-```sh
-$ node node_js/TwitDashBoard/server.js
-```
+
 Then, go to http://localhost:3000/dashboard.
 
 Internally, the server.js will fire up the shell command
 ```sh
-spark-submit --class TopLanguageByTag --master local[4] ~/TweetTopLanguageByTag.jar
+spark-submit --class TopTagByLanguage --master local[4]  <YOURPATH>/TweetTopTagByLanguage.jar
 ```
+
+`<YOURPATH>` depends on the initial path you are in before cloning `myfirstspark.git` appended by `spark/java2/out/artifacts/TweetTopTagByLanguage_jar/`
 
 
 ## Highlighted Code Section
@@ -169,6 +170,7 @@ spark-submit --class TopLanguageByTag --master local[4] ~/TweetTopLanguageByTag.
         JavaPairDStream<String, MinQStringPair> langAndTogNTags =
                 langAndTagTotals2.combineByKey(createCombiner, mergeValue, mergeCombiners, new HashPartitioner(4), true);
 ```
+[slide0]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.000.jpg "Fig 0"
 [slide1]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.001.jpg "Fig 1"
 [slide2]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.002.jpg "Fig 2"
 [slide3]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.003.jpg "Fig 3"
