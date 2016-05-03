@@ -1,0 +1,105 @@
+<html ng-app="hashtagApp">
+<head>
+  <script src="angular.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <link rel="stylesheet" href="index2.css">
+  <script>
+
+    var hashtagApp = angular.module('hashtagApp', []);
+
+    hashtagApp.controller('LangListCtrl', function ($scope) {
+      $scope.langs = [{"code":"all","name":"Global"},{"code":"fr","name":"French"},{"code":"en","name":"English"},{"code":"ar","name":"Arabic"},{"code":"ja","name":"Japanese"},{"code":"es","name":"Spanish"},{"code":"de","name":"German"},{"code":"it","name":"Italian"},{"code":"id","name":"Indonesian"},{"code":"pt","name":"Portuguese"},{"code":"ko","name":"Korean"},{"code":"tr","name":"Turkish"},{"code":"ru","name":"Russian"},{"code":"nl","name":"Dutch"},{"code":"fil","name":"Filipino"},{"code":"msa","name":"Malay"},{"code":"zh-tw","name":"Traditional Chinese"},{"code":"zh-cn","name":"Simplified Chinese"},{"code":"hi","name":"Hindi"},{"code":"no","name":"Norwegian"},{"code":"sv","name":"Swedish"},{"code":"fi","name":"Finnish"},{"code":"da","name":"Danish"},{"code":"pl","name":"Polish"},{"code":"hu","name":"Hungarian"},{"code":"fa","name":"Farsi"},{"code":"he","name":"Hebrew"},{"code":"ur","name":"Urdu"},{"code":"th","name":"Thai"},{"code":"en-gb","name":"English UK"}];
+      var ranges = [];
+      for (var i = 1; i <= 10; i++) {
+         ranges.push(i);
+      }
+      $scope.ranges = ranges;
+
+      $scope.newValue = function(lang, value) {
+      	  //console.log(value);
+      	  $('#section'+value+'-'+lang).css("display", "block");
+      	  $('#section'+(3-value)+'-'+lang).css("display", "none");
+      }
+
+    });
+  </script>
+</head>
+<body ng-controller="LangListCtrl">
+
+
+<div ng-repeat="lang in langs">
+
+<h1>Lang</h1>
+
+    <main>
+      <form>
+        <input id="input1-{{lang.code}}" value="1"  type="radio" name="tabs" checked>
+        <label for="input1-{{lang.code}}">Codepen</label>
+        
+        <input id="input2-{{lang.code}}" value="2"  type="radio" name="tabs">
+        <label for="input2-{{lang.code}}">Dribbble</label>
+      </form>
+        
+      <section id="section1" for="section1" style="display:block">
+         <table id="tab-{{lang.code}}" >
+            <thead>
+              <tr class="header">
+                <th>Tag</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rows">
+                <td>a</td><td>1</td>
+              </tr>
+            </tbody>
+          </table>
+      </section>
+        
+      <section id="section2" style="display:none">
+        abcdefg
+      </section>
+        
+    </main>
+</div>
+
+<div>
+
+
+
+<!--div ng-repeat="lang in langs">
+    <h1>{{lang.name}}</h1>
+
+    <main>
+      
+      <input id="input1-{{lang.code}}" ng-model="value" value="1" ng-change='newValue(lang.code, value)' type="radio" name="tabs" checked>
+      <label for="tab1">Codepen</label>
+        
+      <input id="input2-{{lang.code}}" ng-model="value" value="2" ng-change='newValue(lang.code, value)' type="radio" name="tabs">
+      <label for="tab2">Dribbble</label>
+        
+        
+      <section id="section1-{{lang.code}}" for="section1" style="display:block">
+         <table id="tab-{{lang.code}}" >
+            <thead>
+              <tr class="header">
+                <th>Tag</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rows" ng-repeat='row in ranges'>
+                <td>a</td><td>1</td>
+              </tr>
+            </tbody>
+          </table>
+      </section>
+        
+      <section id="section2-{{lang.code}}" style="display:none">
+        abcdefg
+      </section>
+        
+    </main>
+</div-->
+</body>
+</html>

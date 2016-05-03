@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html dir="ltr" ng-app="hashtagApp">
+<head>
+    <title>Popular Hashtags and their Language Usage</title>
+    <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="index2.css">
+    <script src="angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="jquery.dynatable.js"></script>
+    <script>
+    var hashtagApp = angular.module('hashtagApp', []);
+
+    hashtagApp.controller('LangListCtrl', function ($scope) {
+      $scope.langs = [{"code":"all","name":"Global"},{"code":"fr","name":"French"},{"code":"en","name":"English"},{"code":"ar","name":"Arabic"},{"code":"ja","name":"Japanese"},{"code":"es","name":"Spanish"},{"code":"de","name":"German"},{"code":"it","name":"Italian"},{"code":"id","name":"Indonesian"},{"code":"pt","name":"Portuguese"},{"code":"ko","name":"Korean"},{"code":"tr","name":"Turkish"},{"code":"ru","name":"Russian"},{"code":"nl","name":"Dutch"},{"code":"fil","name":"Filipino"},{"code":"msa","name":"Malay"},{"code":"zh-tw","name":"Traditional Chinese"},{"code":"zh-cn","name":"Simplified Chinese"},{"code":"hi","name":"Hindi"},{"code":"no","name":"Norwegian"},{"code":"sv","name":"Swedish"},{"code":"fi","name":"Finnish"},{"code":"da","name":"Danish"},{"code":"pl","name":"Polish"},{"code":"hu","name":"Hungarian"},{"code":"fa","name":"Farsi"},{"code":"he","name":"Hebrew"},{"code":"ur","name":"Urdu"},{"code":"th","name":"Thai"},{"code":"en-gb","name":"English UK"}];
+      var ranges = [];
+      for (var i = 1; i <= 10; i++) {
+         ranges.push(i);
+      }
+      $scope.ranges = ranges;
+
+      $scope.newValue = function(lang, value) {
+          //console.log(value);
+          $('#section'+value+'-'+lang).css("display", "block");
+          $('#section'+(3-value)+'-'+lang).css("display", "none");
+      }
+
+    });
+  </script>
+</head>
+
+<body ng-controller="LangListCtrl">
+
+    <div style="position: fixed; top: 1%; right: 1%">
+        <span style="float:right; background:white"><a href="https://github.com/arabbig/myfirstspark">Source code</a></span>
+    </div>
+
+<div ng-repeat="lang in langs">
+
+<h1>{{lang.name}}</h1>
+
+    <main>
+      <form>
+        <input id="input1-{{lang.code}}" value="1"  type="radio" name="tabs" checked>
+        <label for="input1-{{lang.code}}">Codepen</label>
+        
+        <input id="input2-{{lang.code}}" value="2"  type="radio" name="tabs">
+        <label for="input2-{{lang.code}}">Dribbble</label>
+      </form>
+        
+      <section id="section1" for="section1" style="display:block">
+         <table id="table-{{lang.code}}" >
+            <thead>
+              <tr class="header">
+                <th>Tag</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in ranges" class="rows">
+                <td>&nbsp</td><td>&nbsp</td>
+              </tr>
+            </tbody>
+          </table>
+      </section>
+        
+      <section id="section2" style="display:none">
+        abcdefg
+      </section>
+        
+    </main>
+</div>
+
+<div>
+
+
+    <div class="subhead">Top Hashtags By Language</div>
+
+    <div id="langBreakDown">
+    </div>
+
+
+   
+</body>
+
+
+
+<script type="text/javascript">
+
+  function setTable(data, $table) {
+    $table.find('tr.rows').each(function(index){
+      if(index < data.length) {
+          $(this).find('td:first').text(data[index].tag);
+          $(this).find('td:last').text(data[index].count);
+      } else{
+          $(this).find('td:first').text('');
+          $(this).find('td:last').text('');
+      }      
+    });
+  }
+
+  function processTagCountJSON(data) {
+      setTable(data, $('#table-all'));
+  }
+
+  function processLangCountJSON(data) {
+      //console.log(data.length);
+      for(j=0; j < data.length; ++j) {
+        //if (key < 3) {
+          value = data[j];
+          console.log('#table-'+value.lang);
+          setTable(value.topTags, $('#table-'+value.lang));
+        //}
+      }
+  }
+
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+      //Socket.io
+      var socket = io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
+      //Acknowledge
+      socket.on('server', function (data) {
+        console.log(data);
+        socket.emit('browser', {});
+      });
+      //display messages sent by the server
+      socket.on('topTags', function(data) {
+        console.log('received topTags: ' + data);
+        // Add the message to the page.
+        processTagCountJSON(data);
+        //$('#json1').html(JSON.stringify(data));
+      });
+
+      socket.on('topTagByLangs', function(data) {
+        console.log('received topTagByLangs: ' + data);
+        // Add the message to the page.
+        //$('#json2').html(JSON.stringify(data));
+        processLangCountJSON(data);                
+      });
+
+    });
+</script>
+    
+
