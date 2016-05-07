@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html dir="ltr" ng-app="hashtagApp">
+<head>
+    <title>Popular Hashtags and their Language Usage</title>
+    <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="index2.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="cube.css">
+    <script src="angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="d3.v3.min.js"></script>
+    <script src="../cubism.v1.js"></script>
+    <script>
+    var codelist = [{"code":"glob","name":"Global"},{"code":"fr","name":"French"},{"code":"en","name":"English"},{"code":"ar","name":"Arabic"},{"code":"ja","name":"Japanese"},{"code":"es","name":"Spanish"},{"code":"de","name":"German"},{"code":"it","name":"Italian"},{"code":"id","name":"Indonesian"},{"code":"pt","name":"Portuguese"},{"code":"ko","name":"Korean"},{"code":"tr","name":"Turkish"},{"code":"ru","name":"Russian"},{"code":"nl","name":"Dutch"},{"code":"fil","name":"Filipino"},{"code":"msa","name":"Malay"},{"code":"zh-tw","name":"Traditional Chinese"},{"code":"zh-cn","name":"Simplified Chinese"},{"code":"hi","name":"Hindi"},{"code":"no","name":"Norwegian"},{"code":"sv","name":"Swedish"},{"code":"fi","name":"Finnish"},{"code":"da","name":"Danish"},{"code":"pl","name":"Polish"},{"code":"hu","name":"Hungarian"},{"code":"fa","name":"Farsi"},{"code":"he","name":"Hebrew"},{"code":"ur","name":"Urdu"},{"code":"th","name":"Thai"},{"code":"en-gb","name":"English UK"}];
+
+    var filter = new Set();
+    filter.add("glob");
+    filter.add("ko");
+    filter.add("th");
+  
+
+    var hashtagApp = angular.module('hashtagApp', []);
+
+    hashtagApp.controller('LangListCtrl', function ($scope) {
+      $scope.langs = [];
+      for(var i=0; i != codelist.length; ++i) 
+      {
+        if(filter.has(codelist[i].code)) {
+            console.log('Include: '+codelist[i].code);
+            $scope.langs.push(codelist[i]);
+        }
+          
+      }
+      
+      var ranges = []; // array for creation of inner loop
+      for (var i = 1; i <= 10; i++) {
+         ranges.push(i);
+      }
+      $scope.ranges = ranges;
+
+    });
+  </script>
+</head>
+<body>
+<div ng-controller="LangListCtrl" style="margin-left:0;width:50%">
+    <div ng-repeat="lang in langs">
+      <div style="margin:0px auto; width: 50px">{{lang.name}}</div>
+      <svg id="barchart-{{lang.code}}"></svg>
+    </div>
+
+</div>
+<div id="timeserie" style="position:fixed;top:200px; right:2%;"></div>
+</body>
+<!--body>
+    <div>
+      <svg id="barchart-all"></svg>
+    </div>
+</body-->
+<script type="text/javascript">
+
+  var format = d3.format(",");
+  var margin = {top: 20, right: 40, bottom: 10, left: 170},
+  width = 400,
+  height = 200 - margin.top - margin.bottom;
+
+  var y = d3.scale.ordinal()
+  .rangeRoundBands([0, height], .1);
+  var x = d3.scale.linear().range([0, width]);
+  var xAxis = d3.svg.axis()
+  .scale(x)
+  .orient("top")
+  .tickSize(-height - margin.bottom)
+  .tickFormat(format);
+
+  var svgArray = new Object();
+  var cntArray = new Object();
+  
+  function initChart(code) {
+    var svg = d3.select("#barchart-"+code)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      /*.style("margin-left", -margin.left + "px")*/
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g").attr("class", "x axis");
+    svg.append("g")
+      .attr("class", "y axis")
+      .append("line")
+      .attr("class", "domain")
+      .attr("y2", height);
+    svgArray[code] = svg;
+  }
+
+  function redrawChart(svg, data) {  
+
+        if(data.length != 10) return;
+
+        var maxValue = 0;
+        data.forEach(function(d){
+          maxValue =  Math.max(parseInt(d.count), maxValue);
+        });
+        x.domain([0, maxValue]);
+
+        y.domain(data.map(function(d) { return d.tag; }));
+        var bar = svg.selectAll(".bar")
+            .data(data, function(d) { return d.tag; });
+
+        var barEnter = bar.enter().insert("g", ".axis")
+            .attr("class", "bar")
+            .attr("transform", function(d) { return "translate(0," + (y(d.tag) + height) + ")"; })
+            .style("fill-opacity", 0);
+        
+        barEnter.append("rect")
+            .attr("width", function(d) {return x(parseInt(d.count)); })
+            .attr("height", y.rangeBand());
+
+        barEnter.append("text")
+            .attr("class", "label")
+            .attr("x", -10)
+            .attr("y", y.rangeBand() / 2)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .text(function(d) { return d.tag; });
+
+        barEnter.append("text")
+            .attr("class", "value")
+            .attr("x", function(d) { return x(parseInt(d.count)) - 3; })
+            .attr("y", y.rangeBand() / 2)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end");
+
+      // ENTER + UPDATE
+      // Appending to the enter selection expands the update selection to include
+      // entering elements; so, operations on the update selection after appending to
+      // the enter selection will apply to both entering and updating nodes.
+        var barUpdate = d3.transition(bar)
+            .attr("transform", function(d) { return "translate(0," + (d.y0 = y(d.tag)) + ")"; })
+            .style("fill-opacity", 1);
+
+        barUpdate.select("rect")
+            .attr("width", function(d) { return x(parseInt(d.count)); });
+
+        barUpdate.select(".value")
+            .attr("x", function(d) { return x(parseInt(d.count)) - 3; })
+            .text(function(d) {return format(Math.round(parseInt(d.count))); });
+
+        var barExit = d3.transition(bar.exit())
+            .attr("transform", function(d) { return "translate(0," + (d.y0 + height) + ")"; })
+            .style("fill-opacity", 0)
+            .remove();
+
+        barExit.select("rect")
+            .attr("width", function(d) { return x(parseInt(d.count)); });
+
+        barExit.select(".value")
+            .attr("x", function(d) { return x(parseInt(d.count)) - 3; })
+            .text(function(d) { return format(parseInt(d.count)); });
+
+        d3.transition(svg).select(".x.axis")
+            .call(xAxis);
+  }
+
+
+  $(function () {
+
+  setTimeout(function () { 
+    for(var i=0; i != codelist.length; ++i) {
+      if(!filter.has(codelist[i].code)) continue ;
+      initChart(codelist[i].code);
+      cntArray[codelist[i].code] = 0;
+    }
+  }, 2000);
+  //Socket.io
+  var socket = io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
+  // Get called if server exist
+  socket.on('server', function (data) {
+    // Send msg back
+    socket.emit('browser', {});
+  });
+
+  //display messages sent by the server
+  socket.on('topTags', function(_data) {
+    //console.log('received topTags: ' + _data);
+    // Add the message to the page.
+    cntArray['glob'] = 0;
+    _data.forEach(function(d){cntArray['glob']+=d.count;});
+    //console.log(cntArray['all']);
+    var wrapper = function () {redrawChart(svgArray['glob'], _data);};
+    d3.transition().duration(2000).each(wrapper);
+  });
+
+  socket.on('topTagByLangs', function(_data) {
+    console.log('received topTagByLangs: ' + _data);
+    for(var i=0; i != _data.length; ++i) { // skip global result
+      //console.log(_data[i].lang);
+      //var redraw = function () {
+      if(!filter.has(_data[i].lang)) continue ;
+      var svg = svgArray[_data[i].lang];
+      if(svg) {
+        var data = _data[i].topTags;
+        cntArray[_data[i].lang] = 0;
+        data.forEach(function(d){cntArray[_data[i].lang]+=d.count;});
+        var wrapper = function() {
+          redrawChart(svg, data);
+        }
+        d3.transition().duration(2000).each(wrapper);
+      }
+    }                  
+  });
+
+});
+
+
+</script>
+<script>
+
+// function random(name) {
+//   var sin = [], 
+//       values = [],
+//       i = 0,
+//       last;
+
+//   for(var j=0; j != 10000; ++j) {
+//     sin[j] = Math.sin(Math.PI*2*(j)/20 + .02);
+//   }
+
+//   return context.metric(function(start, stop, step, callback) {
+//     start = +start, stop = +stop;
+//     if (isNaN(last)) last = start;
+    
+//     while (last < stop) {
+//       last += step;
+//       value = sin[i++];
+//       values.push(value);
+//     }
+//     //console.log();
+//     callback(null, values = values.slice((start-stop)/step));
+//   }, name);
+// }
+
+function random(name) {
+  var sin = [], 
+      values = [],
+      i = 0,
+      last;
+
+  return context.metric(function(start, stop, step, callback) {
+    start = +start, stop = +stop;
+    if (isNaN(last)) last = start;
+    
+    while (last < stop) {
+      last += step;
+      value = cntArray[name];
+      values.push(value);
+    }
+    //console.log();
+    callback(null, values = values.slice((start-stop)/step));
+  }, name);
+}
+
+
+var context = cubism.context()
+    .serverDelay(0)
+    .clientDelay(0)
+    .step(1000)
+    .size(600);
+
+var glob = random("glob"),
+    ko = random("ko"),
+    th = random("th");
+
+d3.select("#timeserie").call(function(div) {
+   div.append("div")
+      .attr("class", "axis")
+      .call(context.axis().orient("top"));
+  // See view-source:https://square.github.io/cubism/ #example2a
+  div.datum(glob);
+
+  div.append("div")
+      .attr("class", "horizon")
+      .call(context.horizon()
+        .height(120)
+        .mode("mirror")
+        .colors(["#bdd7e7","#bae4b3"])
+        .extent([-10, 180]));
+
+  div.datum(ko);
+
+  div.append("div")
+      .attr("class", "horizon")
+      .call(context.horizon()
+        .height(60)
+        .mode("mirror")
+        .colors(["#bdd7e7","#bae4b3"])
+        .extent([-10, 50]));
+
+  div.datum(th);
+
+  div.append("div")
+      .attr("class", "horizon")
+      .call(context.horizon()
+        .height(60)
+        .mode("mirror")
+        .colors(["#bdd7e7","#bae4b3"])
+        .extent([-10, 50]));
+
+
+});
+
+</script>
+</html>

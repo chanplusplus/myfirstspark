@@ -1,0 +1,136 @@
+<html>
+<head>
+	<script src="d3.v3.min.js"></script>
+	<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+	<div id="regionChart">
+	</div>
+</body>
+
+<script>
+ 
+
+
+
+
+
+var format = d3.format(",");
+var margin = {top: 20, right: 40, bottom: 10, left: 205},
+	width = 400,
+	height = 200 - margin.top - margin.bottom;
+
+
+var svg = d3.select("#regionChart").append("svg")
+	.attr("width", width + margin.left + margin.right)
+	.attr("height", height + margin.top + margin.bottom)
+	/*.style("margin-left", -margin.left + "px")*/
+	.append("g")
+	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("g").attr("class", "x axis");
+svg.append("g")
+	.attr("class", "y axis")
+	.append("line")
+	.attr("class", "domain")
+	.attr("y2", height);
+
+
+
+var y = d3.scale.ordinal()
+	.rangeRoundBands([0, height], .1);
+var x = d3.scale.linear().range([0, width]);
+var xAxis = d3.svg.axis()
+	.scale(x)
+	.orient("top")
+	.tickSize(-height - margin.bottom)
+	.tickFormat(format);
+
+
+function redrawRegion() {
+
+	  var maxValue = 0;
+	  data.forEach(function(d){
+	    maxValue =  Math.max(parseInt(d.Value), maxValue);
+	  });
+	  x.domain([0, maxValue]);
+
+	  y.domain(data.map(function(d) { return d.Key; }));
+	  var bar = svg.selectAll(".bar")
+	      .data(data, function(d) { return d.Key; });
+
+	  var barEnter = bar.enter().insert("g", ".axis")
+	      .attr("class", "bar")
+	      .attr("transform", function(d) { return "translate(0," + (y(d.Key) + height) + ")"; })
+	      .style("fill-opacity", 0);
+	  
+	  barEnter.append("rect")
+	      .attr("width", function(d) {return x(parseInt(d.Value)); })
+	      .attr("height", y.rangeBand());
+
+	  barEnter.append("text")
+	      .attr("class", "label")
+	      .attr("x", -10)
+	      .attr("y", y.rangeBand() / 2)
+	      .attr("dy", ".35em")
+	      .attr("text-anchor", "end")
+	      .text(function(d) { return d.Key; });
+
+	  barEnter.append("text")
+	      .attr("class", "value")
+	      .attr("x", function(d) { return x(parseInt(d.Value)) - 3; })
+	      .attr("y", y.rangeBand() / 2)
+	      .attr("dy", ".35em")
+	      .attr("text-anchor", "end");
+
+
+  // ENTER + UPDATE
+  // Appending to the enter selection expands the update selection to include
+  // entering elements; so, operations on the update selection after appending to
+  // the enter selection will apply to both entering and updating nodes.
+	  var barUpdate = d3.transition(bar)
+	      .attr("transform", function(d) { return "translate(0," + (d.y0 = y(d.Key)) + ")"; })
+	      .style("fill-opacity", 1);
+
+	  barUpdate.select("rect")
+	      .attr("width", function(d) { return x(parseInt(d.Value)); });
+
+	  barUpdate.select(".value")
+	      .attr("x", function(d) { return x(parseInt(d.Value)) - 3; })
+	      .text(function(d) {return format(Math.round(parseInt(d.Value))); });
+
+	  var barExit = d3.transition(bar.exit())
+	      .attr("transform", function(d) { return "translate(0," + (d.y0 + height) + ")"; })
+	      .style("fill-opacity", 0)
+	      .remove();
+
+	  barExit.select("rect")
+	      .attr("width", function(d) { return x(parseInt(d.Value)); });
+
+	  barExit.select(".value")
+	      .attr("x", function(d) { return x(parseInt(d.Value)) - 3; })
+	      .text(function(d) { return format(parseInt(d.Value)); });
+
+	  d3.transition(svg).select(".x.axis")
+	      .call(xAxis);
+}
+
+
+var data = data = [{"Key":"A","Value":"10"}, {"Key":"B","Value":"5"}, {"Key":"C","Value":"5"}, {"Key":"D","Value":"3"}];
+
+d3.transition()
+      .duration(2000)
+      .each(redrawRegion);
+
+data =[{"Key":"A","Value":"10"}, {"Key":"B","Value":"9"}, {"Key":"C","Value":"2"}];
+
+setTimeout(function(){ 
+	d3.transition()
+       .duration(2000)
+       .each(redrawRegion);
+},5000);
+
+</script>
+
+</html>
+

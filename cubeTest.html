@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Cubism.js Demo</title>
+<style>
+
+@import url(cube.css);
+
+</style>
+<body>
+<div id="example1"></div>
+</body>
+<script src="../d3.v3.min.js"></script>
+<script src="../cubism.v1.js"></script>
+<script>
+
+
+
+function random(name) {
+  var sin = [], 
+      values = [],
+      i = 0,
+      last;
+
+  for(var j=0; j != 10000; ++j) {
+    sin[j] = Math.sin(Math.PI*2*(j)/20 + .02);
+  }
+
+  return context.metric(function(start, stop, step, callback) {
+    start = +start, stop = +stop;
+    if (isNaN(last)) last = start;
+    
+    while (last < stop) {
+      last += step;
+      value = sin[i++];
+      values.push(value);
+    }
+    //console.log();
+    callback(null, values = values.slice((start-stop)/step));
+  }, name);
+}
+
+
+var context = cubism.context()
+    .serverDelay(0)
+    .clientDelay(0)
+    .step(500)
+    .size(600);
+
+var foo = random("foo"),
+    bar = random("bar");
+
+d3.select("#example1").call(function(div) {
+
+  div.append("div")
+      .attr("class", "axis")
+      .call(context.axis().ticks(5).orient("top"));
+
+  div.selectAll(".horizon")
+      .data([foo, bar, foo.add(bar), foo.subtract(bar)])
+    .enter().append("div")
+      .attr("class", "horizon")
+      .call(context.horizon().extent([-2, 10]));
+
+  div.append("div")
+      .attr("class", "rule")
+      .call(context.rule());
+
+});
+
+</script>
