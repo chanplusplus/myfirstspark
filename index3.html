@@ -164,8 +164,7 @@
 
 
   $(function () {
-  var socket;
-  setTimeout(function(){socket=io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');},1000);
+  var socket=io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
   // Get called if server exist
   socket.on('server', function (data) {
     for(var i=0; i != codelist.length; ++i) {
