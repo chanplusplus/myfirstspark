@@ -164,18 +164,15 @@
 
 
   $(function () {
-
-  setTimeout(function () { 
+  var socket;
+  setTimeout(function(){socket=io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');},1000);
+  // Get called if server exist
+  socket.on('server', function (data) {
     for(var i=0; i != codelist.length; ++i) {
       if(!filter.has(codelist[i].code)) continue ;
       initChart(codelist[i].code);
       cntArray[codelist[i].code] = 0;
     }
-  }, 2000);
-  //Socket.io
-  var socket = io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
-  // Get called if server exist
-  socket.on('server', function (data) {
     // Send msg back
     socket.emit('browser', {});
   });
