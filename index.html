@@ -101,7 +101,7 @@
         data.forEach(function(d){
           maxValue =  Math.max(parseInt(d.count), maxValue);
         });
-        x.domain([0, (maxValue>10?maxValue:10)]);
+        x.domain([0, (maxValue>5?maxValue:5)]);
         y.domain(data.map(function(d) { return d.tag; }));
 
         var bar = svg.selectAll(".bar")
