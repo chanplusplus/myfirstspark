@@ -75,6 +75,7 @@
 
   var svgArray = new Object();
   var cntArray = new Object();
+  var svgCreated = false;
   
   function initChart(code) {
     var svg = d3.select("#barchart-"+code)
@@ -167,10 +168,13 @@
   var socket=io('http://ec2-54-201-43-90.us-west-2.compute.amazonaws.com:3000');
   // Get called if server exist
   socket.on('server', function (data) {
-    for(var i=0; i != codelist.length; ++i) {
-      if(!filter.has(codelist[i].code)) continue ;
-      initChart(codelist[i].code);
-      cntArray[codelist[i].code] = 0;
+    if(!svgCreated) {
+      for(var i=0; i != codelist.length; ++i) {
+        if(!filter.has(codelist[i].code)) continue ;
+        initChart(codelist[i].code);
+        cntArray[codelist[i].code] = 0;
+      }
+      svgCreated = true ; 
     }
     // Send msg back
     socket.emit('browser', {});
@@ -211,30 +215,6 @@
 
 </script>
 <script>
-
-// function source(name) {
-//   var sin = [], 
-//       values = [],
-//       i = 0,
-//       last;
-
-//   for(var j=0; j != 10000; ++j) {
-//     sin[j] = Math.sin(Math.PI*2*(j)/20 + .02);
-//   }
-
-//   return context.metric(function(start, stop, step, callback) {
-//     start = +start, stop = +stop;
-//     if (isNaN(last)) last = start;
-    
-//     while (last < stop) {
-//       last += step;
-//       value = sin[i++];
-//       values.push(value);
-//     }
-//     //console.log();
-//     callback(null, values = values.slice((start-stop)/step));
-//   }, name);
-// }
 
 function source(name) {
   var sin = [], 
