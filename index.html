@@ -212,7 +212,7 @@
 </script>
 <script>
 
-// function random(name) {
+// function source(name) {
 //   var sin = [], 
 //       values = [],
 //       i = 0,
@@ -236,7 +236,7 @@
 //   }, name);
 // }
 
-function random(name) {
+function source(name) {
   var sin = [], 
       values = [],
       i = 0,
@@ -263,9 +263,9 @@ var context = cubism.context()
     .step(1000)
     .size(600);
 
-var glob = random("glob"),
-    ko = random("ko"),
-    th = random("th");
+var glob = source("glob"),
+    ko = source("ko"),
+    th = source("th");
 
 d3.select("#timeserie").call(function(div) {
    div.append("div")
