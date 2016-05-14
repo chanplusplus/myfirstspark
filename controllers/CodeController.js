@@ -1,5 +1,5 @@
     hashtagApp.controller('CodeController', ['$document','$scope',function ($document,$scope) {
-      $scope.value = 0;
+      $scope.val = 0;
       $scope.section = [];
       $scope.section.push($document[0].getElementById("section1"));
       $scope.section.push($document[0].getElementById("section2"));
