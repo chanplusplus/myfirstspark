@@ -33,23 +33,49 @@
         <label for="input2">Mark up</label>
 
         <input id="input3" value="2" type="radio" name="tabs" ng-model="value" ng-change="newValue(value)" >
-        <label for="input3">Directive</label>
+        <label for="input3">App</label>
         
         <input id="input4" value="3"  type="radio" name="tabs" ng-model="value" ng-change="newValue(value)">
-        <label for="input4">Controller</label>
+        <label for="input4">Directive</label>
+
+        <input id="input5" value="4"  type="radio" name="tabs" ng-model="value" ng-change="newValue(value)">
+        <label for="input5">Controller</label>
       </form>
         
       <section id="section1" style="display:block">
         ...
       </section>
       <section id="section2" style="display:none">
-        ...
+        <pre>
+&lt;body ng-app=&quot;hashtagApp&quot;&gt; 
+
+  &lt;div ng-controller=&quot;D3Controller&quot;&gt;
+    &lt;div&gt; 
+      &lt;svg barchart-d3 data=&quot;glob&quot; margin-top=&quot;20&quot; margin-right=&quot;40&quot; margin-bottom=&quot;10&quot; margin-left=&quot;170&quot; canvas-width=&quot;400&quot;&gt;&lt;/svg&gt; 
+    &lt;/div&gt; 
+
+    &lt;div&gt; 
+      &lt;svg barchart-d3 data=&quot;th&quot; margin-top=&quot;20&quot; margin-right=&quot;40&quot; margin-bottom=&quot;10&quot; margin-left=&quot;170&quot; canvas-width=&quot;400&quot;&gt;&lt;/svg&gt; 
+    &lt;/div&gt; 
+
+    &lt;div id=&quot;tsParent&quot;&gt; 
+      &lt;div timeseries-d3 data=&quot;sumOfTop&quot;&gt;&lt;/div&gt; 
+    &lt;/div&gt; 
+  &lt;/div&gt; 
+
+&lt;/body&gt;
+        </pre>
       </section>
       <section id="section3" style="display:none">
-        ...
+        <a href="app.js">app.js</a>
       </section>
       <section id="section4" style="display:none">
-        ...
+        <a href="directives/barchartD3.js">barchartD3.js</a>
+        <a href="directives/timeseriesD3.js">timeseriesD3.js</a>
+      </section>
+      <section id="section5" style="display:none">
+        <a href="controllers/CodeController.js">CodeController.js</a>
+        <a href="controllers/D3Controller.js">D3Controller.js</a>
       </section>
   </div>
 
