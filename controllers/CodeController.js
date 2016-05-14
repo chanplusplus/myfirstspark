@@ -5,6 +5,7 @@
       $scope.section.push($document[0].getElementById("section2"));
       $scope.section.push($document[0].getElementById("section3"));
       $scope.section.push($document[0].getElementById("section4"));
+      $scope.section.push($document[0].getElementById("section5"));
       
       $scope.newValue = function(value) {
           for(var i=0; i !=$scope.section.length; ++i){
