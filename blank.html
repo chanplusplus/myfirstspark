@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3's Chart Wrapper</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.js"></script>
+
+</head>
+<body ng-app="hashtagApp">
+
+  <div ng-controller="D3Controller">
+
+  </div>
+
+  <div ng-controller="CodeController" style="position:fixed;top:2%; left:50%;right:50px;height:400px">
+    <main style="height:100%">
+      <form>
+        <input id="input1" value="0" type="radio" name="tabs" ng-model="val" ng-change="newValue(val)">
+        <label for="input1">Intro</label>
+        
+        <input id="input2" value="1"  type="radio" name="tabs" ng-model="val" ng-change="newValue(val)">
+        <label for="input2">Mark up</label>
+
+        <input id="input3" value="2" type="radio" name="tabs" ng-model="val" ng-change="newValue(val)" >
+        <label for="input3">App</label>
+        
+        <input id="input4" value="3"  type="radio" name="tabs" ng-model="val" ng-change="newValue(val)">
+        <label for="input4">Directive</label>
+
+        <input id="input5" value="4"  type="radio" name="tabs" ng-model="val" ng-change="newValue(val)">
+        <label for="input5">Controller</label>
+      </form>
+        
+      <section id="section1" style="display:block">
+        ...
+      </section>
+      <section id="section2" style="display:none">
+        <pre>
+&lt;body ng-app=&quot;hashtagApp&quot;&gt; 
+
+  &lt;div ng-controller=&quot;D3Controller&quot;&gt;
+    &lt;div&gt; 
+      &lt;svg barchart-d3 data=&quot;glob&quot; margin-top=&quot;20&quot; margin-right=&quot;40&quot; margin-bottom=&quot;10&quot; margin-left=&quot;170&quot; canvas-width=&quot;400&quot;&gt;&lt;/svg&gt; 
+    &lt;/div&gt; 
+
+    &lt;div&gt; 
+      &lt;svg barchart-d3 data=&quot;th&quot; margin-top=&quot;20&quot; margin-right=&quot;40&quot; margin-bottom=&quot;10&quot; margin-left=&quot;170&quot; canvas-width=&quot;400&quot;&gt;&lt;/svg&gt; 
+    &lt;/div&gt; 
+
+    &lt;div id=&quot;tsParent&quot;&gt; 
+      &lt;div timeseries-d3 data=&quot;sumOfTop&quot;&gt;&lt;/div&gt; 
+    &lt;/div&gt; 
+  &lt;/div&gt; 
+
+&lt;/body&gt;
+        </pre>
+      </section>
+      <section id="section3" style="display:none">
+        <a href="app.js">app.js</a>
+      </section>
+      <section id="section4" style="display:none">
+        <a href="directives/barchartD3.js">barchartD3.js</a>
+        <a href="directives/timeseriesD3.js">timeseriesD3.js</a>
+      </section>
+      <section id="section5" style="display:none">
+        <a href="controllers/D3Controller.js">D3Controller.js</a>
+      </section>
+  </div>
+
+</body>
+  <script src="app.js"></script>
+  <script src="directives/barchartD3.js"></script>
+  <script src="directives/timeseriesD3.js"></script>
+  <script src="controllers/D3Controller.js"></script>
+  <script src="controllers/CodeController.js"></script>
+</html>
