@@ -29,6 +29,7 @@ io.on('connection', function(socket) {
      console.log('Visited while sparkOn='+sparkOn);
      if(sparkOn) return;
      sparkOn = true;
+     exec('find /tmp -name "blockmgr*" | xargs rm -r', function(err,out,code){});
      exec(startcmd, function(err, out, code) {
        if (err instanceof Error) throw err;
        process.stderr.write(err);
