@@ -170,16 +170,16 @@ spark-submit --class TopTagByLanguage --master local[4]  <YOURPATH>/TweetTopTagB
         JavaPairDStream<String, MinQStringPair> langAndTogNTags =
                 langAndTagTotals2.combineByKey(createCombiner, mergeValue, mergeCombiners, new HashPartitioner(4), true);
 ```
-[slide0]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.000.jpg "Fig 0"
-[slide1]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.001.jpg "Fig 1"
-[slide2]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.002.jpg "Fig 2"
-[slide3]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.003.jpg "Fig 3"
-[slide4]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.004.jpg "Fig 4"
-[slide5]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.005.jpg "Fig 5"
-[slide6]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.006.jpg "Fig 6"
-[slide7]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.007.jpg "Fig 7"
-[slide8]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.008.jpg "Fig 8"
-[slide9]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.009.jpg "Fig 9"
-[slide10]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.010.jpg "Fig 10"
-[slide11]: http://arabbig.github.io/myfirstspark/slide/MyFirstSparkSlide.011.jpg "Fig 11"
+[slide0]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.000.jpg "Fig 0"
+[slide1]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.001.jpg "Fig 1"
+[slide2]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.002.jpg "Fig 2"
+[slide3]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.003.jpg "Fig 3"
+[slide4]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.004.jpg "Fig 4"
+[slide5]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.005.jpg "Fig 5"
+[slide6]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.006.jpg "Fig 6"
+[slide7]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.007.jpg "Fig 7"
+[slide8]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.008.jpg "Fig 8"
+[slide9]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.009.jpg "Fig 9"
+[slide10]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.010.jpg "Fig 10"
+[slide11]: http://chanplusplus.github.io/myfirstspark/slide/MyFirstSparkSlide.011.jpg "Fig 11"
 
